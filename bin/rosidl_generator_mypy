@@ -10,7 +10,8 @@ try:
 except ImportError:
     # NOTE: Modifying sys.path and importing the Python package with the same
     # name as this script does not work on Windows
-    # See the
+    # Use the same way as:
+    # https://github.com/ros2/rosidl_python/blob/5b9fe9cad6876e877cbbcf17950c47a9e753c6e6/rosidl_generator_py/bin/rosidl_generator_py#L10-L21  # NOQA
     module_name = "rosidl_generator_mypy"
     root_path = pathlib.Path(__file__).resolve().parents[1]
     init_path = os.path.join(root_path, "rosidl_generator_mypy", "__init__.py")
