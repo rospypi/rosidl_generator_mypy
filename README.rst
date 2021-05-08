@@ -2,7 +2,7 @@
 rosidl_generator_mypy
 =====================
 
-A Python stub generator from genmsg specs
+Stub files generator for the ROS2 interfaces in Python
 
 Installation
 ============
