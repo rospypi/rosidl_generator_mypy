@@ -1,0 +1,10 @@
+include CMakeLists.txt
+include LICENSE
+include README.rst
+include bin/rosidl_generator_mypy
+include package.xml
+include rosidl_generator_mypy-extras.cmake.in
+
+recursive-include cmake *.cmake
+recursive-include resource *.cmake *.em
+recursive-include rosidl_generator_mypy *.py py.typed

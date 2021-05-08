@@ -1,0 +1,6 @@
+include("${CMAKE_CURRENT_LIST_DIR}/register_mypy.cmake")
+rosidl_generator_mypy_extras(
+  "${rosidl_generator_mypy_DIR}/../../../lib/rosidl_generator_mypy/rosidl_generator_mypy"
+  "${rosidl_generator_mypy_DIR}/../../../@PYTHON_INSTALL_DIR@/rosidl_generator_mypy/__init__.py"
+  "${rosidl_generator_mypy_DIR}/../resource"
+)
