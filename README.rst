@@ -10,7 +10,7 @@ Installation
 .. code:: sh
 
     cd your_workspace/src
-    git clone git@github.com:rospypi/rosidl_generator_mypy.git
+    git clone https://github.com/rospypi/rosidl_generator_mypy.git
 
 
 Usage
