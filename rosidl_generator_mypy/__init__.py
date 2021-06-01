@@ -58,7 +58,7 @@ def generate(generator_arguments_file: str) -> List[str]:
                 )
                 f.write(
                     f"from {package_name}.{subfolder}.{module_name} import "
-                    f"{idl_stem}  # noqa: F401\n"
+                    f"{idl_stem} as {idl_stem}  # noqa: F401\n"
                 )
 
     return generated_files
