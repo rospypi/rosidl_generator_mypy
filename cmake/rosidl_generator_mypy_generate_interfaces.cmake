@@ -84,10 +84,7 @@ if(NOT rosidl_generate_interfaces_SKIP_INSTALL)
   # As `ament_python_install_module` is not supposed to be called multiple times,
   # we have encountered the same problem as:
   # https://github.com/ros2/rosidl/issues/88 and https://github.com/ros2/rosidl/pull/89
-  install(DIRECTORY "${_output_path}/__init__.pyi"
-    DESTINATION "${PYTHON_INSTALL_DIR}/${PROJECT_NAME}/${_generated_py_dir}"
-  )
-  install(DIRECTORY "${_output_path}/py.typed"
+  install(FILES "${_output_path}/__init__.pyi" "${_output_path}/py.typed"
     DESTINATION "${PYTHON_INSTALL_DIR}/${PROJECT_NAME}/${_generated_py_dir}"
   )
 
