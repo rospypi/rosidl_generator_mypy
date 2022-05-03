@@ -41,7 +41,7 @@ assert service.response_message.structure.namespaced_type.namespaces == service.
 }@
 @#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 class @(service.namespaced_type.name)(metaclass=Metaclass_@(service.namespaced_type.name)):
-    Request = @(service.request_message.structure.namespaced_type.name)
-    Response = @(service.response_message.structure.namespaced_type.name)
+    Request: typing.TypeAlias[@(service.request_message.structure.namespaced_type.name)] = @(service.request_message.structure.namespaced_type.name)
+    Response: typing.TypeAlias[@(service.response_message.structure.namespaced_type.name)] = @(service.response_message.structure.namespaced_type.name)
 
     def __init__(self) -> None: ...
