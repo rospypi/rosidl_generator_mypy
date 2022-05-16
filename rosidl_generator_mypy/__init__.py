@@ -123,8 +123,13 @@ def to_type_annotation(
     except Exception:
         pass
 
-    if isinstance(type_, (AbstractSequence, Array)):
+    if isinstance(type_, (AbstractSequence)):
         return "typing.Sequence[{}]".format(
+            to_type_annotation(current_namespace, defined_classes, type_.value_type)
+        )
+    
+    if isinstance(type_, (Array)):
+        return "array.array[{}]".format(
             to_type_annotation(current_namespace, defined_classes, type_.value_type)
         )
 

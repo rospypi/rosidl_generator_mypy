@@ -5,6 +5,7 @@ first_party_imports = set()
 generator(component, defined_classes, third_party_imports, first_party_imports)
 }@
 import typing
+import array
 @[if len(third_party_imports) > 0]@
 
 @[for statement in sorted(third_party_imports)]@
