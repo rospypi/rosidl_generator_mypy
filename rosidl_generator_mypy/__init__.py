@@ -13,6 +13,7 @@ from rosidl_parser.definition import (
     AbstractSequence,
     AbstractType,
     Action,
+    Array,
     IdlContent,
     IdlLocator,
     Message,
@@ -139,6 +140,13 @@ def to_type_annotation(
             }
     except Exception:
         pass
+
+    if isinstance(type_, (Array)):
+        type_annotation = to_type_annotation(current_namespace, defined_classes, type_.value_type)
+        return {
+            "getter": "np.ndarray",
+            "setter": "typing.Union[typing.Sequence[{}], np.ndarray]".format(type_annotation["setter"])
+        }
 
     if isinstance(type_, (AbstractSequence)):
         type_annotation = to_type_annotation(current_namespace, defined_classes, type_.value_type)

@@ -6,6 +6,7 @@ generator(component, defined_classes, third_party_imports, first_party_imports)
 }@
 import typing
 import array
+import numpy as np
 @[if len(third_party_imports) > 0]@
 
 @[for statement in sorted(third_party_imports)]@
