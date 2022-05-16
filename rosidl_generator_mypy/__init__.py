@@ -22,6 +22,19 @@ from rosidl_parser.definition import (
 )
 from rosidl_parser.parser import parse_idl_file
 
+# TODO - this ought to be imported from rosidl_generator_py/generate_py_impl.py
+SPECIAL_NESTED_BASIC_TYPES = {
+    'float': {'dtype': 'numpy.float32', 'type_code': 'f'},
+    'double': {'dtype': 'numpy.float64', 'type_code': 'd'},
+    'int8': {'dtype': 'numpy.int8', 'type_code': 'b'},
+    'uint8': {'dtype': 'numpy.uint8', 'type_code': 'B'},
+    'int16': {'dtype': 'numpy.int16', 'type_code': 'h'},
+    'uint16': {'dtype': 'numpy.uint16', 'type_code': 'H'},
+    'int32': {'dtype': 'numpy.int32', 'type_code': 'i'},
+    'uint32': {'dtype': 'numpy.uint32', 'type_code': 'I'},
+    'int64': {'dtype': 'numpy.int64', 'type_code': 'q'},
+    'uint64': {'dtype': 'numpy.uint64', 'type_code': 'Q'},
+}
 
 class Annotation(TypedDict):
     getter: str
@@ -148,8 +161,8 @@ def to_type_annotation(
 
     if isinstance(type_, (AbstractSequence)):
         type_annotation = to_type_annotation(current_namespace, defined_classes, type_.value_type)
-        if (type_annotation["getter"] == 'int' or type_annotation["getter"] == 'float'): 
-            # If the getter is and int or float that data will be stored in an array.array
+        if (type_annotation["getter"] in SPECIAL_NESTED_BASIC_TYPES): 
+            # If the getter is a basic type the data will be stored in an array.array
             return {
                 "getter": "array.array[{}]".format(type_annotation["getter"]),
                 "setter": "typing.Union[typing.Sequence[{}], array.array[{}]]".format(type_annotation["setter"], type_annotation["setter"])
