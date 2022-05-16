@@ -148,10 +148,15 @@ def to_type_annotation(
 
     if isinstance(type_, (AbstractSequence)):
         type_annotation = to_type_annotation(current_namespace, defined_classes, type_.value_type)
-        # The getter for a sequence returns an array but the setter can be either an array or a sequence.
+        if (type_annotation["getter"] == 'int' or type_annotation["getter"] == 'float'): 
+            # If the getter is and int or float that data will be stored in an array.array
+            return {
+                "getter": "array.array[{}]".format(type_annotation["getter"]),
+                "setter": "typing.Union[typing.Sequence[{}], array.array[{}]]".format(type_annotation["setter"], type_annotation["setter"])
+            }
         return {
-            "getter": "array.array[{}]".format(type_annotation["getter"]),
-            "setter": "typing.Union[typing.Sequence[{}], array.array[{}]]".format(type_annotation["setter"], type_annotation["setter"])
+            "getter": "typing.Sequence[{}]".format(type_annotation["getter"]),
+            "setter": "typing.Sequence[{}]".format(type_annotation["setter"]),
         }
 
 
