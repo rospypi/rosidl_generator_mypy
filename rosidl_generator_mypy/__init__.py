@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple, TypedDict
 
 from rosidl_cmake import (
     convert_camel_case_to_lower_case_underscore,
@@ -22,8 +22,6 @@ from rosidl_parser.definition import (
 )
 from rosidl_parser.parser import parse_idl_file
 
-
-from typing import TypedDict
 
 class Annotation(TypedDict):
     getter: str
