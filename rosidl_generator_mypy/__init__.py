@@ -13,7 +13,6 @@ from rosidl_parser.definition import (
     AbstractSequence,
     AbstractType,
     Action,
-    Array,
     IdlContent,
     IdlLocator,
     Message,
@@ -21,6 +20,13 @@ from rosidl_parser.definition import (
     Service,
 )
 from rosidl_parser.parser import parse_idl_file
+
+
+from typing import TypedDict
+
+class Annotation(TypedDict):
+    getter: str
+    setter: str
 
 
 def generate(generator_arguments_file: str) -> List[str]:
@@ -102,38 +108,51 @@ def get_defined_classes(content: IdlContent) -> Set[str]:
 
 def to_type_annotation(
     current_namespace: NamespacedType, defined_classes: Set[str], type_: AbstractType
-) -> str:
+) -> Annotation:
     if isinstance(type_, NamespacedType):
         if type_.namespaces == current_namespace.namespaces:
             if type_.name in defined_classes:
                 # member is defined in the same module, so no need to add namespaces
-                return '"{}"'.format(type_.name)
+                type_annotation = '"{}"'.format(type_.name)
+                return {
+                    "getter": type_annotation,
+                    "setter": type_annotation
+                }
 
             # NOTE: We export .pyi files, which don't affect the Python code execution at all.
             # As mypy solves the import cycles properly,
             # we import classes from not a module but a package.
             # (i.e. in the same way as imports for other packages)
 
-        return "{}.{}".format(".".join(type_.namespaces), type_.name)
+        type_annotation = "{}.{}".format(".".join(type_.namespaces), type_.name)
+        return {
+            "getter": type_annotation,
+            "setter": type_annotation
+        } 
 
     try:
         ret = generate_py_impl.get_python_type(type_)
         if ret is not None:
-            return str(ret)
+            return {
+                "getter": str(ret),
+                "setter": str(ret),
+            }
     except Exception:
         pass
 
     if isinstance(type_, (AbstractSequence)):
-        return "typing.Sequence[{}]".format(
-            to_type_annotation(current_namespace, defined_classes, type_.value_type)
-        )
-    
-    if isinstance(type_, (Array)):
-        return "array.array[{}]".format(
-            to_type_annotation(current_namespace, defined_classes, type_.value_type)
-        )
+        type_annotation = to_type_annotation(current_namespace, defined_classes, type_.value_type)
+        # The getter for a sequence returns an array but the setter can be either an array or a sequence.
+        return {
+            "getter": "array.array[{}]".format(type_annotation["getter"]),
+            "setter": "typing.Union[typing.Sequence[{}], array.array[{}]]".format(type_annotation["setter"], type_annotation["setter"])
+        }
 
-    return str(type_)
+
+    return {
+        "getter": str(type_),
+        "setter": str(type_),
+    }
 
 
 def _get_import_statement(

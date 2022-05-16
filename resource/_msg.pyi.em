@@ -69,7 +69,7 @@ class @(message.structure.namespaced_type.name)(metaclass=Metaclass_@(message.st
         self,
         *,
 @[for name, annotation, noqa_string in members]@
-        @(name): @(annotation) = ...,@(noqa_string)
+        @(name): @(annotation["getter"]) = ...,@(noqa_string)
 @[end for]@
         **kwargs: typing.Any,
     ) -> None: ...
@@ -80,7 +80,7 @@ class @(message.structure.namespaced_type.name)(metaclass=Metaclass_@(message.st
     # Members
 @[for name, annotation, noqa_string in members]@
     @@property@(noqa_string)
-    def @(name)(self) -> @(annotation): ...@(noqa_string)
+    def @(name)(self) -> @(annotation["getter"]): ...@(noqa_string)
     @@@(name).setter@(noqa_string)
-    def @(name)(self, value: @(annotation)) -> None: ...@(noqa_string)
+    def @(name)(self, value: @(annotation["setter"])) -> None: ...@(noqa_string)
 @[end for]@
