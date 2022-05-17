@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Dict, List, Optional, Set, Tuple, TypedDict
+from typing import Dict, List, NamedTuple, Optional, Set, Tuple
 
 from rosidl_cmake import (
     convert_camel_case_to_lower_case_underscore,
@@ -24,7 +24,8 @@ from rosidl_parser.parser import parse_idl_file
 
 SPECIAL_NESTED_BASIC_TYPES = ["int", "float"]
 
-class Annotation(TypedDict):
+
+class Annotation(NamedTuple):
     getter: str
     setter: str
 
@@ -113,58 +114,50 @@ def to_type_annotation(
         if type_.namespaces == current_namespace.namespaces:
             if type_.name in defined_classes:
                 # member is defined in the same module, so no need to add namespaces
-                type_annotation = '"{}"'.format(type_.name)
-                return {
-                    "getter": type_annotation,
-                    "setter": type_annotation
-                }
+                annotation = '"{}"'.format(type_.name)
+                return Annotation(annotation, annotation)
 
             # NOTE: We export .pyi files, which don't affect the Python code execution at all.
             # As mypy solves the import cycles properly,
             # we import classes from not a module but a package.
             # (i.e. in the same way as imports for other packages)
 
-        type_annotation = "{}.{}".format(".".join(type_.namespaces), type_.name)
-        return {
-            "getter": type_annotation,
-            "setter": type_annotation
-        } 
+        annotation = "{}.{}".format(".".join(type_.namespaces), type_.name)
+        return Annotation(annotation, annotation)
 
     try:
         ret = generate_py_impl.get_python_type(type_)
         if ret is not None:
-            return {
-                "getter": str(ret),
-                "setter": str(ret),
-            }
+            return Annotation(str(ret), str(ret))
     except Exception:
         pass
 
     if isinstance(type_, (Array)):
-        type_annotation = to_type_annotation(current_namespace, defined_classes, type_.value_type)
-        return {
-            "getter": "np.ndarray",
-            "setter": "typing.Union[typing.Sequence[{}], np.ndarray]".format(type_annotation["setter"])
-        }
-
+        type_annotation = to_type_annotation(
+            current_namespace, defined_classes, type_.value_type
+        )
+        return Annotation(
+            "np.ndarray",
+            "typing.Union[typing.Sequence[{}], np.ndarray]".format(
+                type_annotation.setter
+            ),
+        )
     if isinstance(type_, (AbstractSequence)):
-        type_annotation = to_type_annotation(current_namespace, defined_classes, type_.value_type)
-        if (type_annotation["getter"] in SPECIAL_NESTED_BASIC_TYPES): 
+        type_annotation = to_type_annotation(
+            current_namespace, defined_classes, type_.value_type
+        )
+        if type_annotation.getter in SPECIAL_NESTED_BASIC_TYPES:
             # If the getter is a basic type the data will be stored in an array.array
-            return {
-                "getter": "array.array[{}]".format(type_annotation["getter"]),
-                "setter": "typing.Union[typing.Sequence[{}], array.array[{}]]".format(type_annotation["setter"], type_annotation["setter"])
-            }
-        return {
-            "getter": "typing.Sequence[{}]".format(type_annotation["getter"]),
-            "setter": "typing.Sequence[{}]".format(type_annotation["setter"]),
-        }
+            return Annotation(
+                "array.array[{}]".format(type_annotation.getter),
+                "typing.Sequence[{}]".format(type_annotation.setter),
+            )
+        return Annotation(
+            "typing.Sequence[{}]".format(type_annotation.getter),
+            "typing.Sequence[{}]".format(type_annotation.setter),
+        )
 
-
-    return {
-        "getter": str(type_),
-        "setter": str(type_),
-    }
+    return Annotation(str(type_), str(type_))
 
 
 def _get_import_statement(
