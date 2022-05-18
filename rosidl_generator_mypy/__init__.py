@@ -132,7 +132,7 @@ def to_type_annotation(
     except Exception:
         pass
 
-    if isinstance(type_, (Array)):
+    if isinstance(type_, Array):
         type_annotation = to_type_annotation(
             current_namespace, defined_classes, type_.value_type
         )
@@ -142,7 +142,7 @@ def to_type_annotation(
                 type_annotation.setter
             ),
         )
-    if isinstance(type_, (AbstractSequence)):
+    if isinstance(type_, AbstractSequence):
         type_annotation = to_type_annotation(
             current_namespace, defined_classes, type_.value_type
         )
