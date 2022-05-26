@@ -136,8 +136,17 @@ def to_type_annotation(
         type_annotation = to_type_annotation(
             current_namespace, defined_classes, type_.value_type
         )
+        if type_annotation.getter in SPECIAL_NESTED_BASIC_TYPES:
+            return Annotation(
+                "np.ndarray",
+                "typing.Union[typing.Sequence[{}], np.ndarray]".format(
+                    type_annotation.setter
+                ),
+            )
         return Annotation(
-            "np.ndarray",
+            "typing.Union[typing.Sequence[{}], np.ndarray]".format(
+                type_annotation.getter
+            ),
             "typing.Union[typing.Sequence[{}], np.ndarray]".format(
                 type_annotation.setter
             ),
