@@ -133,25 +133,37 @@ def to_type_annotation(
         pass
 
     if isinstance(type_, Array):
-        type_annotation = to_type_annotation(
-            current_namespace, defined_classes, type_.value_type
-        )
-        return Annotation(
-            "np.ndarray",
-            "typing.Union[typing.Sequence[{}], np.ndarray]".format(
-                type_annotation.setter
-            ),
-        )
-    if isinstance(type_, AbstractSequence):
+        # The type_ will be Array for bounded lists
         type_annotation = to_type_annotation(
             current_namespace, defined_classes, type_.value_type
         )
         if type_annotation.getter in SPECIAL_NESTED_BASIC_TYPES:
-            # If the getter is a basic type the data will be stored in an array.array
+            # eg: int64[4]
+            return Annotation(
+                "np.ndarray",
+                "typing.Union[typing.Sequence[{}], np.ndarray]".format(
+                    type_annotation.setter
+                ),
+            )
+
+        # eg: std_msgs/Header[4]
+        return Annotation(
+            "typing.Sequence[{}]".format(type_annotation.getter),
+            "typing.Sequence[{}]".format(type_annotation.setter),
+        )
+    if isinstance(type_, AbstractSequence):
+        # The type_ will be AbstractSequence for unbounded lists
+        type_annotation = to_type_annotation(
+            current_namespace, defined_classes, type_.value_type
+        )
+        if type_annotation.getter in SPECIAL_NESTED_BASIC_TYPES:
+            # eg: int64[]
             return Annotation(
                 "array.array[{}]".format(type_annotation.getter),
                 "typing.Sequence[{}]".format(type_annotation.setter),
             )
+
+        # eg: std_msgs/Header[]
         return Annotation(
             "typing.Sequence[{}]".format(type_annotation.getter),
             "typing.Sequence[{}]".format(type_annotation.setter),
