@@ -51,12 +51,12 @@ class Metaclass_@(message.structure.namespaced_type.name)(type):
     ) -> typing.Mapping[str, typing.Any]: ...
 @[for constant in message.constants]@
     @@property
-    def @(constant.name)(self) -> @(to_type_annotation(current_namespace, defined_classes, constant.type)): ...
+    def @(constant.name)(self) -> @(to_type_annotation(current_namespace, defined_classes, constant.type).getter): ...
 @[end for]@
 @[for member in message.structure.members]@
 @[  if member.has_annotation('default')]@
     @@property
-    def @(member.name.upper())__DEFAULT(cls) -> @(to_type_annotation(current_namespace, defined_classes, member.type)): ...
+    def @(member.name.upper())__DEFAULT(cls) -> @(to_type_annotation(current_namespace, defined_classes, member.type).getter): ...
 @[  end if]@
 @[end for]@
 
@@ -69,7 +69,7 @@ class @(message.structure.namespaced_type.name)(metaclass=Metaclass_@(message.st
         self,
         *,
 @[for name, annotation, noqa_string in members]@
-        @(name): @(annotation) = ...,@(noqa_string)
+        @(name): @(annotation.getter) = ...,@(noqa_string)
 @[end for]@
         **kwargs: typing.Any,
     ) -> None: ...
@@ -80,7 +80,7 @@ class @(message.structure.namespaced_type.name)(metaclass=Metaclass_@(message.st
     # Members
 @[for name, annotation, noqa_string in members]@
     @@property@(noqa_string)
-    def @(name)(self) -> @(annotation): ...@(noqa_string)
+    def @(name)(self) -> @(annotation.getter): ...@(noqa_string)
     @@@(name).setter@(noqa_string)
-    def @(name)(self, value: @(annotation)) -> None: ...@(noqa_string)
+    def @(name)(self, value: @(annotation.setter)) -> None: ...@(noqa_string)
 @[end for]@
