@@ -4,16 +4,14 @@ third_party_imports = set()
 first_party_imports = set()
 generator(component, defined_classes, third_party_imports, first_party_imports)
 
-import sys
-python_minor_version = sys.version_info.minor
 }@
 
+import sys
 import typing
-@[if python_minor_version < 10]@
-from typing_extensions import TypeAlias
-@[else]@
-from typing import TypeAlias
-@[end if]
+if sys.version_info < (3, 10):
+    from typing_extensions import TypeAlias
+else:
+    from typing import TypeAlias
 
 import array
 import numpy as np
