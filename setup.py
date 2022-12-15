@@ -18,10 +18,11 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Programming Language :: Python",
     ],
     license="Apache License 2.0",
     url="https://github.com/rospypi/rosidl_generator_mypy",
     include_package_data=True,
-    zip_safe=False,
+    zip_safe=False
 )
