@@ -34,13 +34,3 @@ Examples:
     .. code:: xml
 
         <build_depend>rosidl_generator_mypy</build_depend>
-
-rosidl CLI
-----------
-
-We are planning to provide a rosidl CLI plugin so that you can generate stub files by the unified CLI ``rosidl generate``.
-As ``rosidl_cli`` is not yet available in ROS2 distributions (except ``rolling``), we would like to wait for it to be distributed.
-See the upstream issue and design proposal for more details:
-
-- Issue: https://github.com/ros2/rosidl/issues/565
-- Proposal: https://github.com/ros2/design/pull/310
