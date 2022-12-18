@@ -24,5 +24,5 @@ setup(
     license="Apache License 2.0",
     url="https://github.com/rospypi/rosidl_generator_mypy",
     include_package_data=True,
-    zip_safe=False
+    zip_safe=False,
 )
