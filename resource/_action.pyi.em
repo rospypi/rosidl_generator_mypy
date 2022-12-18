@@ -66,14 +66,14 @@ assert_namespace_equals(action, action.feedback_message.structure)
 }@
 @#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 class @(action.namespaced_type.name)(metaclass=Metaclass_@(action.namespaced_type.name)):
-    Goal: TypeAlias[@(action.goal.structure.namespaced_type.name)] = @(action.goal.structure.namespaced_type.name)
-    Result: TypeAlias[@(action.result.structure.namespaced_type.name)] = @(action.result.structure.namespaced_type.name)
-    Feedback: TypeAlias[@(action.feedback.structure.namespaced_type.name)] = @(action.feedback.structure.namespaced_type.name)
+    Goal: TypeAlias = @(action.goal.structure.namespaced_type.name)
+    Result: TypeAlias = @(action.result.structure.namespaced_type.name)
+    Feedback: TypeAlias = @(action.feedback.structure.namespaced_type.name)
 
     class Impl:
-        SendGoalService: TypeAlias[@(action.send_goal_service.namespaced_type.name)] = @(action.send_goal_service.namespaced_type.name)
-        GetResultService: TypeAlias[@(action.get_result_service.namespaced_type.name)] = @(action.get_result_service.namespaced_type.name)
-        FeedbackMessage: TypeAlias[@(action.feedback_message.structure.namespaced_type.name)] = @(action.feedback_message.structure.namespaced_type.name)
+        SendGoalService: TypeAlias = @(action.send_goal_service.namespaced_type.name)
+        GetResultService: TypeAlias = @(action.get_result_service.namespaced_type.name)
+        FeedbackMessage: TypeAlias = @(action.feedback_message.structure.namespaced_type.name)
 
         from action_msgs.srv._cancel_goal import CancelGoal as CancelGoalService
         from action_msgs.msg._goal_status_array import GoalStatusArray as GoalStatusMessage
