@@ -67,7 +67,9 @@ class @(message.structure.namespaced_type.name)(metaclass=Metaclass_@(message.st
 
     def __init__(
         self,
+@[if len(members)]@
         *,
+@[end if]@
 @[for name, annotation, noqa_string in members]@
         @(name): @(annotation.getter) = ...,@(noqa_string)
 @[end for]@
