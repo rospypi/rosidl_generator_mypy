@@ -9,7 +9,7 @@ if generate_imports:
 }@
 @#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 @{
-from rosidl_cmake import convert_camel_case_to_lower_case_underscore
+from rosidl_pycommon import convert_camel_case_to_lower_case_underscore
 
 action_name = '_' + convert_camel_case_to_lower_case_underscore(action.namespaced_type.name)
 module_name = '_' + convert_camel_case_to_lower_case_underscore(interface_path.stem)

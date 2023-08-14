@@ -2,11 +2,6 @@ import os
 import pathlib
 from typing import Dict, List, NamedTuple, Optional, Set, Tuple
 
-from rosidl_cmake import (
-    convert_camel_case_to_lower_case_underscore,
-    generate_files,
-    read_generator_arguments,
-)
 from rosidl_generator_py import generate_py_impl
 from rosidl_parser.definition import (
     AbstractNestedType,
@@ -21,6 +16,11 @@ from rosidl_parser.definition import (
     Service,
 )
 from rosidl_parser.parser import parse_idl_file
+from rosidl_pycommon import (
+    convert_camel_case_to_lower_case_underscore,
+    generate_files,
+    read_generator_arguments,
+)
 
 SPECIAL_NESTED_BASIC_TYPES = ["int", "float"]
 
