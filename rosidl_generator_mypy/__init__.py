@@ -165,7 +165,7 @@ def to_type_annotation(
 
         # eg: std_msgs/Header[]
         return Annotation(
-            "typing.Sequence[{}]".format(type_annotation.getter),
+            "typing.MutableSequence[{}]".format(type_annotation.getter),
             "typing.Sequence[{}]".format(type_annotation.setter),
         )
 
