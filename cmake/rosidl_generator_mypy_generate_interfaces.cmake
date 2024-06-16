@@ -1,7 +1,5 @@
 find_package(rmw REQUIRED)
 
-find_package(PythonInterp 3.6 REQUIRED)
-
 set(_output_path
   "${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_mypy/${PROJECT_NAME}")
 set(_generated_pyi_files "")
