@@ -1,6 +1,6 @@
 find_package(rmw REQUIRED)
 
-find_package(PythonInterp 3.6 REQUIRED)
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 set(_output_path
   "${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_mypy/${PROJECT_NAME}")
