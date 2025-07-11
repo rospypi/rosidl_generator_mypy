@@ -15,6 +15,7 @@ else:
 
 import array
 import numpy as np
+import numpy.typing as np_typing
 
 @[if len(third_party_imports) > 0]@
 
