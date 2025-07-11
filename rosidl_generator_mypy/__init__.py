@@ -139,7 +139,7 @@ def to_type_annotation(
         )
         if type_annotation.getter in SPECIAL_NESTED_BASIC_TYPES:
 
-            dtype = generate_py_impl.SPECIAL_NESTED_BASIC_TYPES[type_.value_type.typename]['dtype']
+            dtype = generate_py_impl.SPECIAL_NESTED_BASIC_TYPES[type_.value_type.typename]['dtype'].replace('numpy', 'np')
             # eg: int64[4]
             return Annotation(
                 "np_typing.NDArray[{}]".format(dtype),
