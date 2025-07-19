@@ -138,14 +138,14 @@ def to_type_annotation(
             current_namespace, defined_classes, type_.value_type
         )
         if type_annotation.getter in SPECIAL_NESTED_BASIC_TYPES:
-
-            dtype = generate_py_impl.SPECIAL_NESTED_BASIC_TYPES[type_.value_type.typename]['dtype']
+            dtype = generate_py_impl.SPECIAL_NESTED_BASIC_TYPES[
+                type_.value_type.typename
+            ]["dtype"]
             # eg: int64[4]
             return Annotation(
                 "np_typing.NDArray[{}]".format(dtype),
                 "typing.Union[typing.Sequence[{}], np_typing.NDArray[{}]]".format(
-                    type_annotation.setter,
-                    dtype
+                    type_annotation.setter, dtype
                 ),
             )
 
